@@ -16,13 +16,7 @@ function CallHistory() {
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
             Calls{" "}
-            {userData && userData.rows[0].type == 1
-              ? "Rumah Sakit"
-              : userData && userData.rows[0].type == 2
-              ? "Polisi"
-              : userData && userData.rows[0].type == 3
-              ? "Pemadam Kebakaran"
-              : ""} History
+            {userData && userData.rows[0].instances_name} History
           </Heading>
           <TableCallHistory />
         </Container>
