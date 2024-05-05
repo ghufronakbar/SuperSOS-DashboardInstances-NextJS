@@ -6,35 +6,80 @@ import {
   Button,
   Select,
   UnorderedList,
+  Text,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { List, Nav } from "reactstrap";
 import { axiosInstance } from "../lib/axios";
+import { useContext } from "react";
+import { AuthContext } from "@/lib/authorization";
 
 export function NavbarAdmin() {
   const router = useRouter();
+  const userData = useContext(AuthContext);
+  const id_instances = userData && userData.rows[0].id_instances;
+  const [instancesName, setInstancesName] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [nav, setNav] = useState(null);
 
+  // const { data: dataProfile, refetch: refetchDataProfile } = useQuery({
+  //   queryKey: ["profile", id_instances],
+  //   queryFn: async () => {
+  //     const dataResponse = await axiosInstance.get(`/profile/${id_instances}`);
+  //     setLoading(false);
+  //     return dataResponse;
+  //   },
+  // });
 
+  // useEffect(() => {
+  //   if (dataProfile) {
+  //     setInstancesName(dataProfile.data.values[0].instances_name);
+  //   }
+  // }, [dataProfile]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const reqDataResponse = await axiosInstance.get(`/profile/${id_instances}`);
+        setNav(reqDataResponse.data.values[0]);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+        console.error("Error fetching detail request data:", error);
+      }
+    };
+
+    if (id_instances) {
+      fetchData();
+    }
+  }, [id_instances]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/admin/login");
   };
 
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    router.push(selectedValue);
-  };
-
   return (
     <Flex p={1} bg="#4FD1C5" color="white" padding="3">
       <Box>
-        <Button colorScheme="white" variant="ghost">
-          SUPERSOS ADMIN
-        </Button>
+        <Box
+          as="button"
+          p={2}
+          borderWidth="1px"
+          borderRadius="lg"
+          overflow="hidden"
+          ml={8}
+          flex={2}
+          onClick={() => {
+            router.push(`/admin/profile`);
+          }}
+        >
+          <Text as="b">  {nav && (<>{nav.instances_name}</>)} - SUPERSOS ADMIN</Text>
+        </Box>
       </Box>
       <Spacer />
       <Box>
@@ -50,56 +95,40 @@ export function NavbarAdmin() {
               }}
             >
               <List>
-                <ChakraLink href="/admin/instance">
+                <ChakraLink href="/admin/call">
                   <Button colorScheme="white" variant="ghost">
-                    Instance
+                    Call
                   </Button>
                 </ChakraLink>
               </List>
               <List>
-                <ChakraLink href="/admin/instance/pending">
+                <ChakraLink href="/admin/call/pending">
                   <Button colorScheme="white" variant="ghost">
-                    Request Instance
+                    Pending Call
+                  </Button>
+                </ChakraLink>
+              </List><List>
+                <ChakraLink href="/admin/call/history">
+                  <Button colorScheme="white" variant="ghost">
+                    History
                   </Button>
                 </ChakraLink>
               </List>
-              <List>
-                <ChakraLink href="/admin/user">
-                  <Button colorScheme="white" variant="ghost">
-                    User
-                  </Button>
-                </ChakraLink>
-              </List>
-              <List>
-                <Box>
-                  <Select
-                    placeholder="Call"
-                    onChange={handleSelectChange}
-                    color={"white"}
-                    variant="fill"
-                  >
-                    {" "}
-                    <option value="/admin/call"> All Calls</option>
-                    <option value="/admin/call/type/1">Call Rumah Sakit</option>
-                    <option value="/admin/call/type/2">Call Polisi</option>
-                    <option value="/admin/call/type/3">
-                      Call Pemadam Kebakaran
-                    </option>
-                  </Select>
-                </Box>
-              </List>
-              <List>
-                <Box>
-                  <Select
-                    placeholder="Call"
-                    onChange={handleSelectChange}
-                    color={"white"}
-                    variant="fill"
-                  >
-                 
-                  </Select>
-                </Box>
-              </List>
+              
+              <Box
+                as="button"
+                p={2}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                mr={8}
+                flex={2}
+                onClick={() => {
+                  handleLogout()
+                }}
+              >
+                <Text as="b">Logout</Text>
+              </Box>
             </UnorderedList>
           </Nav>
         </Box>

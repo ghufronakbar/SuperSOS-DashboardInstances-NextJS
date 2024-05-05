@@ -42,6 +42,8 @@ export function DetailCall() {
     }
   }, [id_call]);
 
+  
+
   function formatDate(dateString) {
     const options = {
       weekday: "long",
