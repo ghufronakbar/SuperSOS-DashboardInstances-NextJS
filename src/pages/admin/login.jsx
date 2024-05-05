@@ -63,7 +63,7 @@ function Login() {
           <br />
           <br />
           <br />
-          <Heading>Login Admin</Heading>
+          <Heading>Login as Instance Admin</Heading>
           <form onSubmit={handleLogin}>
             <FormControl mt={4}>
               <FormLabel>Email</FormLabel>
