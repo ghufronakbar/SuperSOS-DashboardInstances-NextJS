@@ -43,7 +43,9 @@ export function NavbarAdmin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reqDataResponse = await axiosInstance.get(`/profile/${id_instances}`);
+        const reqDataResponse = await axiosInstance.get(
+          `/profile/${id_instances}`
+        );
         setNav(reqDataResponse.data.values[0]);
         setLoading(false);
       } catch (error) {
@@ -78,7 +80,10 @@ export function NavbarAdmin() {
             router.push(`/admin/profile`);
           }}
         >
-          <Text as="b">  {nav && (<>{nav.instances_name}</>)} - SUPERSOS ADMIN</Text>
+          <Text as="b">
+            {" "}
+            {nav && <>{nav.instances_name}</>} - SUPERSOS ADMIN
+          </Text>
         </Box>
       </Box>
       <Spacer />
@@ -95,26 +100,39 @@ export function NavbarAdmin() {
               }}
             >
               <List>
-                <ChakraLink href="/admin/call">
-                  <Button colorScheme="white" variant="ghost">
-                    Call
-                  </Button>
-                </ChakraLink>
+                <Button
+                  colorScheme="white"
+                  variant="ghost"
+                  onClick={() => {
+                    router.push(`/admin/call`);
+                  }}
+                >
+                  Call
+                </Button>
               </List>
               <List>
-                <ChakraLink href="/admin/call/pending">
-                  <Button colorScheme="white" variant="ghost">
-                    Pending Call
-                  </Button>
-                </ChakraLink>
-              </List><List>
-                <ChakraLink href="/admin/call/history">
-                  <Button colorScheme="white" variant="ghost">
-                    History
-                  </Button>
-                </ChakraLink>
+                <Button
+                  colorScheme="white"
+                  variant="ghost"
+                  onClick={() => {
+                    router.push(`/admin/call/pending`);
+                  }}
+                >
+                  Pending Call
+                </Button>
               </List>
-              
+              <List>
+                <Button
+                  colorScheme="white"
+                  variant="ghost"
+                  onClick={() => {
+                    router.push(`/admin/call/history`);
+                  }}
+                >
+                  History
+                </Button>
+              </List>
+
               <Box
                 as="button"
                 p={2}
@@ -124,7 +142,7 @@ export function NavbarAdmin() {
                 mr={8}
                 flex={2}
                 onClick={() => {
-                  handleLogout()
+                  handleLogout();
                 }}
               >
                 <Text as="b">Logout</Text>
