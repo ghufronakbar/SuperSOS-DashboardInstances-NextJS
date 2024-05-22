@@ -1,16 +1,6 @@
 import {
   Box,
-  Center,
-  Table,
   Flex,
-  Text,
-  Spacer,
-  Tbody,
-  Tr,
-  TableContainer,
-  Th,
-  Td,
-  Image,
   VStack,
   FormControl,
   FormLabel,
@@ -58,18 +48,32 @@ export function DetailProfile() {
 
   const handleUpdate = async () => {
     try {
-      await axiosInstance.put(`/profile/edit/${id_instances}`, {
-        instances_name: instancesName,
-        address: address,
-        phone: phone,
-        email: email,
-      });
-      toast({
-        title: "Successfully update profile",
-        status: "success",
-      });
+      const response = await axiosInstance.put(
+        `/profile/edit/${id_instances}`,
+        {
+          instances_name: instancesName,
+          address: address,
+          phone: phone,
+          email: email,
+        }
+      );
+      if (response.data.status == 200) {
+        toast({
+          title: response.data.message,
+          status: "success",
+        });
+      } else if (response.data.status == 400) {
+        toast({
+          title: response.data.message,
+          status: "danger",
+        });
+      }
     } catch (error) {
       console.error("Error rejecting request:", error);
+      toast({
+        title: error.response.data.message,
+        status: "warning",
+      });
     }
   };
 
@@ -81,22 +85,22 @@ export function DetailProfile() {
           new_password: newPassword,
         });
         toast({
-          title: "Successfully change password",
+          title: "Berhasil mengubah password",
           status: "success",
         });
         setOldPassword("");
         setNewPassword("");
         setConfirmationPassword("");
-      }else{
+      } else {
         toast({
-            title: "Confirmation password doesn't match",
-            status: "error",
-          });
+          title: "Konfirmasi password tidak cocok",
+          status: "error",
+        });
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
         toast({
-          title: "Old password doesn't match",
+          title: "Password lama tidak cocok",
           status: "error",
         });
       } else {
@@ -123,21 +127,21 @@ export function DetailProfile() {
             >
               <form>
                 <FormControl my={6}>
-                  <FormLabel>Instances Name</FormLabel>
+                  <FormLabel>Nama Instansi</FormLabel>
                   <Input
                     value={instancesName}
                     onChange={(e) => setInstancesName(e.target.value)}
                   ></Input>
                 </FormControl>
                 <FormControl my={6}>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>Alamat</FormLabel>
                   <Input
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   ></Input>
                 </FormControl>
                 <FormControl my={6}>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel>Telepon</FormLabel>
                   <Input
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
@@ -171,25 +175,25 @@ export function DetailProfile() {
             >
               <form>
                 <FormControl my={6}>
-                  <FormLabel>Old Password</FormLabel>
+                  <FormLabel>Password Lama</FormLabel>
                   <Input
-                  type="password"
+                    type="password"
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                   ></Input>
                 </FormControl>
                 <FormControl my={6}>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel> Password Baru</FormLabel>
                   <Input
-                  type="password"
+                    type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                   ></Input>
                 </FormControl>
                 <FormControl my={6}>
-                  <FormLabel>Confirmation Password</FormLabel>
+                  <FormLabel>Konfirmasi Password Baru</FormLabel>
                   <Input
-                  type="password"
+                    type="password"
                     value={confirmationPassword}
                     onChange={(e) => setConfirmationPassword(e.target.value)}
                   ></Input>

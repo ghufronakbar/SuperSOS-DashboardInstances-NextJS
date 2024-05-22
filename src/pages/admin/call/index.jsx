@@ -15,7 +15,7 @@ function Call() {
       <main>
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Calls{" "}
+            Panggilan Darurat{" "}
             {userData && userData.rows[0].type == 1
               ? "Rumah Sakit"
               : userData && userData.rows[0].type == 2

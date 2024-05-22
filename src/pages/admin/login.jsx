@@ -12,12 +12,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { HeadAdmin } from "@/components/HeadAdmin";
+import { useRouter } from "next/router";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const toast = useToast();
+  const router = useRouter()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,12 +40,12 @@ function Login() {
           status: "success",
         });
 
-        window.location.href = "/admin/call/pending";
+        router.push("/admin/call/pending")
       } else {
         console.log(response)
         setError(message);
         toast({
-          title: "Email or Password doesn't match",
+          title: "Email dan password tidak cocok",
           status: "error",
         });
       }
@@ -63,7 +65,7 @@ function Login() {
           <br />
           <br />
           <br />
-          <Heading>Login as Instance Admin</Heading>
+          <Heading>Login sebagai Admin Instansi</Heading>
           <form onSubmit={handleLogin}>
             <FormControl mt={4}>
               <FormLabel>Email</FormLabel>

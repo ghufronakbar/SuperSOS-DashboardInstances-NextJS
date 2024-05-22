@@ -15,8 +15,8 @@ function CallHistory() {
       <main>
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Calls{" "}
-            {userData && userData.rows[0].instances_name} History
+            Riwayat Panggilan Darurat Terjawab{" "}
+            {userData && userData.rows[0].instances_name} 
           </Heading>
           <TableCallHistory />
         </Container>

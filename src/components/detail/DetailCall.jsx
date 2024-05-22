@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 export function DetailCall() {
   const router = useRouter();
   const { id: id_call } = router.query;
-  const [item, setRequestData] = useState(null);
+  const [call, setCall] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -28,7 +28,7 @@ export function DetailCall() {
     const fetchData = async () => {
       try {
         const reqDataResponse = await axiosInstance.get(`/call/${id_call}`);
-        setRequestData(reqDataResponse.data.values[0]);
+        setCall(reqDataResponse.data.values[0]);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -51,7 +51,7 @@ export function DetailCall() {
       month: "long",
       year: "numeric",
     };
-    return new Date(dateString).toLocaleDateString("en-US", options);
+    return new Date(dateString).toLocaleDateString("id-ID", options);
   }
 
   if (loading) return <div>Loading...</div>;
@@ -59,7 +59,7 @@ export function DetailCall() {
 
   return (
     <>
-      {item && (
+      {call && (
         <Box>
           <Flex justifyContent="center">
             <Box flex={4} mt={4}>
@@ -75,7 +75,7 @@ export function DetailCall() {
                     m={4}
                   >
                     <Center>
-                      {item.user.map((user) => (
+                      {call.user.map((user) => (
                         <>
                           {" "}
                           <Image
@@ -91,7 +91,7 @@ export function DetailCall() {
                     <Box mt={5}>
                       <TableContainer>
                         <Table>
-                          {item.user.map((user) => (
+                          {call.user.map((user) => (
                             <Tbody>
                               <Tr>
                                 <Th>Name</Th>
@@ -109,11 +109,10 @@ export function DetailCall() {
                                 <Th>Address</Th>
                                 <Td>{user.address}</Td>
                               </Tr>
-
                               <Tr>
                                 <Th>Applied At</Th>
                                 <Td>
-                                  <Text>{formatDate(item.applied_at)}</Text>
+                                  <Text>{formatDate(call.applied_at)}</Text>
                                 </Td>
                               </Tr>
                             </Tbody>
@@ -133,11 +132,11 @@ export function DetailCall() {
                     <Box mt={4}>
                       <TableContainer>
                         <Table>
-                          {item.instances.length ? (
-                            item.instances.map((instance) => (
+                          {call.instances.length ? (
+                            call.instances.map((instance) => (
                               <Tbody key={instance.id}>
                                 <Tr>
-                                  <Th>Name</Th>
+                                  <Th>Nama</Th>
                                   <Td>{instance.instances_name}</Td>
                                 </Tr>
                                 <Tr>
@@ -145,16 +144,16 @@ export function DetailCall() {
                                   <Td>{instance.email}</Td>
                                 </Tr>
                                 <Tr>
-                                  <Th>Phone</Th>
+                                  <Th>Telepon</Th>
                                   <Td>{instance.phone}</Td>
                                 </Tr>
                                 <Tr>
-                                  <Th>Address</Th>
+                                  <Th>Alamat</Th>
                                   <Td>{instance.address}</Td>
                                 </Tr>
                                 <Tr>
-                                  <Th>Answered At</Th>
-                                  <Td>{formatDate(item.answered_at)}</Td>
+                                  <Th>Panggilan Dijawab</Th>
+                                  <Td>{formatDate(call.answered_at)}</Td>
                                 </Tr>
                               </Tbody>
                             ))
@@ -171,7 +170,7 @@ export function DetailCall() {
                                     m={2}
                                     px={4}
                                   >
-                                    Hasn't Answered
+                                    Belum Terjawab
                                   </Box>
                                 </Td>
                               </Tr>
@@ -197,18 +196,18 @@ export function DetailCall() {
                         <Tbody>
                         
                           <Tr>
-                            <Th>LOCATION</Th>
+                            <Th>LOKASI</Th>
                             <Td isNumeric>
-                              {item.latitude}, {item.longitude}
+                              {call.latitude}, {call.longitude}
                             </Td>
                           </Tr>
                           <Tr>
-                            <Th>Type</Th>
+                            <Th>Panggilan Untuk</Th>
 
                             <Td isNumeric>
-                              {item.type == 1
+                              {call.type == 1
                                 ? "Rumah Sakit"
-                                : item.type == 2
+                                : call.type == 2
                                 ? "Polisi"
                                 : "Pemadam Kebakaran"}
                             </Td>
@@ -221,9 +220,9 @@ export function DetailCall() {
                                 as="button"
                                 borderRadius="md"
                                 bg={
-                                  item.status === 0
+                                  call.status === 0
                                     ? "#CBD5E0"
-                                    : item.status === 1
+                                    : call.status === 1
                                     ? "#E53E3E"
                                     : "#0063d1"
                                 }
@@ -235,11 +234,11 @@ export function DetailCall() {
                                 <VStack>
                                  
                                   <Text as="b">
-                                    {item.status === 0
-                                      ? "Pending"
-                                      : item.status === 1
-                                      ? "Cancelled by user"
-                                      : "Accepted"}
+                                    {call.status === 0
+                                      ? "Menunggu"
+                                      : call.status === 1
+                                      ? "Dibatalkan oleh pemanggil"
+                                      : "Terjawab"}
                                   </Text>
                                 </VStack>
                               </Box>
@@ -259,9 +258,9 @@ export function DetailCall() {
                       overflow="hidden"
                       
                     >
-                      <Table mb={4}><Th as='b'>Message</Th></Table>
+                      <Table mb={4}><Th as='b'>Pesan</Th></Table>
                       <Text px={4} style={{ overflowWrap: "break-word" }}>
-                        {item.message}
+                        {call.message}
                       </Text>
                     </Box>
                 </Box>

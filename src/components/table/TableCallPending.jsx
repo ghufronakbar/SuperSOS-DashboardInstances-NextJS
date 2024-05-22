@@ -36,7 +36,7 @@ export function TableCallPending() {
   const userData = useContext(AuthContext);
   const type = userData && userData.rows[0].type;
   const [idCall, setIdCall] = useState(null);
-  const idInstances =  userData && userData.rows[0].id_instances
+  const idInstances = userData && userData.rows[0].id_instances;
   function formatDate(dateString) {
     const options = {
       weekday: "long",
@@ -44,7 +44,7 @@ export function TableCallPending() {
       month: "long",
       year: "numeric",
     };
-    return new Date(dateString).toLocaleDateString("en-US", options);
+    return new Date(dateString).toLocaleDateString("id-ID", options);
   }
 
   let i = 1;
@@ -66,7 +66,7 @@ export function TableCallPending() {
         id_instances: idInstances,
       });
       toast({
-        title: "Successfully approve this call!",
+        title: "Sukses menjawab panggilan darurat ini! segera ke lokasi!",
         status: "success",
       });
       refetchDataCall();
@@ -84,9 +84,9 @@ export function TableCallPending() {
             <Tr>
               <Th>No</Th>
               <Th></Th>
-              <Th>Name</Th>
-              <Th>Location</Th>
-              <Th>Applied At</Th>
+              <Th>Nama</Th>
+              <Th>Lokasi</Th>
+              <Th>Waktu Panggilan</Th>
               <Th>Status</Th>
               <Th></Th>
             </Tr>
@@ -151,14 +151,14 @@ export function TableCallPending() {
                             ? () => {
                                 toast({
                                   title:
-                                    "This calls has been cancelled by user",
+                                    "Panggilan darurat sudah dibatalkan oleh pemanggil",
                                   status: "warning",
                                 });
                               }
                             : item.status == 2
                             ? () => {
                                 toast({
-                                  title: "This calls has been accepted",
+                                  title: "Panggilan darurat ini sudah terjawab",
                                   status: "warning",
                                 });
                               }
@@ -168,10 +168,10 @@ export function TableCallPending() {
                         <VStack>
                           <Text as="b">
                             {item.status === 0
-                              ? "Pending"
+                              ? "Menunggu"
                               : item.status === 1
-                              ? "Cancelled"
-                              : "Accepted by "}
+                              ? "Dibatalkan"
+                              : "Diterima oleh "}
                             {item.instances.map((instance) => (
                               <>{instance.instances_name}</>
                             ))}
@@ -179,7 +179,7 @@ export function TableCallPending() {
                           {item.status === 0 ? (
                             ""
                           ) : item.status == 1 ? (
-                            <Text>Cancelled By User</Text>
+                            <Text>Dibatalkan oleh pemanggil</Text>
                           ) : (
                             <Text>{formatDate(item.answered_at)}</Text>
                           )}
@@ -207,7 +207,7 @@ export function TableCallPending() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Approve Instance?</ModalHeader>
+          <ModalHeader>Jawab panggilan darurat ini?</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex>
@@ -225,7 +225,7 @@ export function TableCallPending() {
                   setIsModalOpen(false);
                 }}
               >
-                Cancel
+                Tutup
               </Button>
               <Spacer />
               <Button
@@ -235,11 +235,11 @@ export function TableCallPending() {
                 color="white"
                 px={4}
                 h={8}
-                onClick={()=>{
-                  handleApprove(idCall)
+                onClick={() => {
+                  handleApprove(idCall);
                 }}
               >
-                Accept
+                Jawab
               </Button>
 
               <Spacer />

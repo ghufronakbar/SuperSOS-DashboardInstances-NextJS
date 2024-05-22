@@ -10,7 +10,7 @@ export const HeadAdmin = () => {
                 <title> {userData && userData.rows[0].instances_name} - SuperSOS</title>
                 <meta name="admin page" content="admin page for konek app" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/SuperSOS.png" />
+                <link rel="icon" href="/logo.png" />
             </Head>
         )
     

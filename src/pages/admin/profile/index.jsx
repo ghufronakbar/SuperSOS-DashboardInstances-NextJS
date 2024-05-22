@@ -15,7 +15,7 @@ function Profile() {
       <main>
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-         Edit Profile
+         Edit Profil
           </Heading>
           <DetailProfile />
         </Container>

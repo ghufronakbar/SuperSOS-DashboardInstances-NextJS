@@ -15,14 +15,14 @@ function CallPending() {
       <main>
         <Container maxW="80%">
           <Heading marginBottom="8" marginTop="8">
-            Calls{" "}
+          Panggilan Darurat Belum Terjawab{" "}
             {userData && userData.rows[0].type == 1
               ? "Rumah Sakit"
               : userData && userData.rows[0].type == 2
               ? "Polisi"
               : userData && userData.rows[0].type == 3
               ? "Pemadam Kebakaran"
-              : ""} Pending
+              : ""} 
           </Heading>
           <TableCallPending />
         </Container>
