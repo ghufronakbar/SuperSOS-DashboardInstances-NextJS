@@ -7,8 +7,11 @@ import {
   Container,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
   Input,
+  Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { HeadAdmin } from "@/components/HeadAdmin";
@@ -90,6 +93,9 @@ function Login() {
               Login
             </Button>
           </form>
+          <HStack mt={4}>
+          <Text>Don't have an account?  </Text><Text color='blue' onClick={()=>{router.push(`/admin/register`)}}>Sign Up</Text>
+          </HStack>
           {error && <div style={{ color: "red" }}>{error}</div>}
         </Container>
       </main>
