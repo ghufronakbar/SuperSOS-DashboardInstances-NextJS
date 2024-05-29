@@ -12,10 +12,13 @@ import {
   Td,
   Image,
   VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { formatDecimal } from "@/lib/formatDecimal";
 
 export function DetailCall() {
   const router = useRouter();
@@ -41,8 +44,6 @@ export function DetailCall() {
       fetchData();
     }
   }, [id_call]);
-
-  
 
   function formatDate(dateString) {
     const options = {
@@ -194,22 +195,30 @@ export function DetailCall() {
                     <TableContainer>
                       <Table>
                         <Tbody>
-                        
                           <Tr>
                             <Th>LOKASI</Th>
-                            <Td isNumeric>
-                              {call.latitude}, {call.longitude}
-                            </Td>
+                            <Td>
+                              <Center>
+                                <Text>{formatDecimal(call.latitude)}, </Text>
+                                <Text>
+                                  {formatDecimal(call.longitude)}
+                                </Text>{" "}
+                                <a href={call.url_google_map} target="_blank">
+                                  <ExternalLinkIcon />
+                                </a>
+                              </Center>
+                            </Td>{" "}
                           </Tr>
                           <Tr>
                             <Th>Panggilan Untuk</Th>
-
                             <Td isNumeric>
-                              {call.type == 1
-                                ? "Rumah Sakit"
-                                : call.type == 2
-                                ? "Polisi"
-                                : "Pemadam Kebakaran"}
+                              <Center>
+                                {call.type == 1
+                                  ? "Rumah Sakit"
+                                  : call.type == 2
+                                  ? "Polisi"
+                                  : "Pemadam Kebakaran"}
+                              </Center>
                             </Td>
                           </Tr>
 
@@ -232,7 +241,6 @@ export function DetailCall() {
                                 px={4}
                               >
                                 <VStack>
-                                 
                                   <Text as="b">
                                     {call.status === 0
                                       ? "Menunggu"
@@ -247,22 +255,22 @@ export function DetailCall() {
                         </Tbody>
                       </Table>
                     </TableContainer>
-                    
                   </Box>
                   <Box
-                  m={4}
-                      mt={8}
-                      p={8}
-                      borderWidth="1px"
-                      borderRadius="lg"
-                      overflow="hidden"
-                      
-                    >
-                      <Table mb={4}><Th as='b'>Pesan</Th></Table>
-                      <Text px={4} style={{ overflowWrap: "break-word" }}>
-                        {call.message}
-                      </Text>
-                    </Box>
+                    m={4}
+                    mt={8}
+                    p={8}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                  >
+                    <Table mb={4}>
+                      <Th as="b">Pesan</Th>
+                    </Table>
+                    <Text px={4} style={{ overflowWrap: "break-word" }}>
+                      {call.message}
+                    </Text>
+                  </Box>
                 </Box>
               </Flex>
             </Box>
