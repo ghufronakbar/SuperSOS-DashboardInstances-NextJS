@@ -22,12 +22,15 @@ import {
   Tr,
   VStack,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/lib/authorization";
+import { formatDecimal } from "@/lib/formatDecimal";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 export function TableCallPending() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,11 +119,14 @@ export function TableCallPending() {
                   </Text>
                 </Td>
                 <Td>
-                  <Text>{item.latitude}</Text>
-                  <Text>{item.longitude}</Text>
-                </Td>
-
-                <Td>
+                  <HStack>
+                    <Text>{formatDecimal(item.latitude)}, </Text>
+                    <Text>{formatDecimal(item.longitude)}</Text>{" "}
+                    <a href={item.url_google_map} target="_blank">
+                      <ExternalLinkIcon />
+                    </a>
+                  </HStack>
+                </Td>{" "}<Td>
                   <Text>{formatDate(item.applied_at)}</Text>
                 </Td>
 
