@@ -31,6 +31,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "@/lib/authorization";
 import { formatDecimal } from "@/lib/formatDecimal";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Loading } from "../Loading";
+import { formatDate } from "@/lib/formatDate";
 
 export function TableCallHistory() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,15 +42,7 @@ export function TableCallHistory() {
   const type = userData && userData.rows[0].type;
   const [idCall, setIdCall] = useState(null);
   const idInstances = userData && userData.rows[0].id_instances;
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("id-ID", options);
-  }
+  const [isLoading, setIsloading] = useState(true);
 
   let i = 1;
   const { data: dataCall, refetch: refetchDataCall } = useQuery({
@@ -57,6 +51,7 @@ export function TableCallHistory() {
       const dataResponse = await axiosInstance.get(
         `/calls/history/${idInstances}`
       );
+      setIsloading(false);
       return dataResponse;
     },
   });
@@ -80,6 +75,12 @@ export function TableCallHistory() {
       console.error("Error rejecting request:", error);
     }
   };
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <>

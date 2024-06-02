@@ -19,6 +19,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { formatDecimal } from "@/lib/formatDecimal";
+import { Loading } from "../Loading";
+import { formatDate } from "@/lib/formatDate";
 
 export function DetailCall() {
   const router = useRouter();
@@ -44,18 +46,9 @@ export function DetailCall() {
       fetchData();
     }
   }, [id_call]);
+  
 
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("id-ID", options);
-  }
-
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading/>
   if (error) return <div>Error fetching data</div>;
 
   return (

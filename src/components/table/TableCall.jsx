@@ -31,6 +31,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "@/lib/authorization";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { formatDecimal } from "@/lib/formatDecimal";
+import { Loading } from "../Loading";
+import { formatDate } from "@/lib/formatDate";
 
 export function TableCall() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,21 +42,16 @@ export function TableCall() {
   const type = userData && userData.rows[0].type;
   const [idCall, setIdCall] = useState(null);
   const idInstances = userData && userData.rows[0].id_instances;
-  function formatDate(dateString) {
-    const options = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return new Date(dateString).toLocaleDateString("id-ID", options);
-  }
+  const [isLoading, setIsloading] = useState(true);
+
+  
 
   let i = 1;
   const { data: dataCall, refetch: refetchDataCall } = useQuery({
     queryKey: ["calls", type],
     queryFn: async () => {
       const dataResponse = await axiosInstance.get(`/calls/${type}`);
+      setIsloading(false);
       return dataResponse;
     },
   });
@@ -78,6 +75,12 @@ export function TableCall() {
       console.error("Error rejecting request:", error);
     }
   };
+  if (isLoading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
 
   return (
     <>
@@ -120,7 +123,7 @@ export function TableCall() {
                 </Td>
                 <Td>
                   <HStack>
-                    <Text>{formatDecimal(item.latitude)}, {" "}</Text>
+                    <Text>{formatDecimal(item.latitude)}, </Text>
                     <Text>{formatDecimal(item.longitude)}</Text>{" "}
                     <a href={item.url_google_map} target="_blank">
                       <ExternalLinkIcon />

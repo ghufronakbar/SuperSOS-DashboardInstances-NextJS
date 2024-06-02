@@ -15,6 +15,7 @@ import { List, Nav } from "reactstrap";
 import { axiosInstance } from "../lib/axios";
 import { useContext } from "react";
 import { AuthContext } from "@/lib/authorization";
+import { Loading } from "./Loading";
 
 export function NavbarAdmin() {
   const router = useRouter();
@@ -43,11 +44,13 @@ export function NavbarAdmin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reqDataResponse = await axiosInstance.get(
-          `/profile/${id_instances}`
-        );
-        setNav(reqDataResponse.data.values[0]);
-        setLoading(false);
+        
+          const profileResponse = await axiosInstance.get(
+            `/profile/${id_instances}`
+          );
+          setNav(profileResponse.data.values[0]);
+          setLoading(false);
+        
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -58,12 +61,15 @@ export function NavbarAdmin() {
     if (id_instances) {
       fetchData();
     }
-  }, [id_instances]);
+  }, );
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/admin/login");
   };
+
+  // if(loading)return(<><Loading/></>) 
+
 
   return (
     <Flex p={1} bg="#4FD1C5" color="white" padding="3">
@@ -82,7 +88,7 @@ export function NavbarAdmin() {
         >
           <Text as="b">
             {" "}
-            {nav && <>{nav.instances_name}</>} - SUPERSOS ADMIN
+            {nav ? `${nav.instances_name} -  SUPERSOS ADMIN` : `Detail Panggilan`}
           </Text>
         </Box>
       </Box>
