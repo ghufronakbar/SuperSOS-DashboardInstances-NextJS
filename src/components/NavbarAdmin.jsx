@@ -16,6 +16,7 @@ import { axiosInstance } from "../lib/axios";
 import { useContext } from "react";
 import { AuthContext } from "@/lib/authorization";
 import { Loading } from "./Loading";
+import { jwtDecode } from "jwt-decode";
 
 export function NavbarAdmin() {
   const router = useRouter();
@@ -26,31 +27,14 @@ export function NavbarAdmin() {
   const [error, setError] = useState(null);
   const [nav, setNav] = useState(null);
 
-  // const { data: dataProfile, refetch: refetchDataProfile } = useQuery({
-  //   queryKey: ["profile", id_instances],
-  //   queryFn: async () => {
-  //     const dataResponse = await axiosInstance.get(`/profile/${id_instances}`);
-  //     setLoading(false);
-  //     return dataResponse;
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (dataProfile) {
-  //     setInstancesName(dataProfile.data.values[0].instances_name);
-  //   }
-  // }, [dataProfile]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
-          const profileResponse = await axiosInstance.get(
-            `/profile/${id_instances}`
-          );
-          setNav(profileResponse.data.values[0]);
-          setLoading(false);
-        
+        const profileResponse = await axiosInstance.get(
+          `/profile/${id_instances}`
+        );
+        setNav(profileResponse.data.values[0]);
+        setLoading(false);
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -61,15 +45,14 @@ export function NavbarAdmin() {
     if (id_instances) {
       fetchData();
     }
-  }, );
+  });
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/admin/login");
   };
 
-  // if(loading)return(<><Loading/></>) 
-
+  // if(loading)return(<><Loading/></>)
 
   return (
     <Flex p={1} bg="#4FD1C5" color="white" padding="3">
@@ -88,7 +71,9 @@ export function NavbarAdmin() {
         >
           <Text as="b">
             {" "}
-            {nav ? `${nav.instances_name} -  SUPERSOS ADMIN` : `Detail Panggilan`}
+            {nav
+              ? `${nav.instances_name} -  SUPERSOS ADMIN`
+              : `Detail Panggilan`}
           </Text>
         </Box>
       </Box>

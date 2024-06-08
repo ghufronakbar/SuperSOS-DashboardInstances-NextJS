@@ -13,11 +13,13 @@ import {
   Image,
   VStack,
   HStack,
+  useClipboard,
+  useToast,
 } from "@chakra-ui/react";
 import { axiosInstance } from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { formatDecimal } from "@/lib/formatDecimal";
 import { Loading } from "../Loading";
 import { formatDate } from "@/lib/formatDate";
@@ -28,6 +30,9 @@ export function DetailCall() {
   const [call, setCall] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [urlGoogleMap, setUrlGoogleMap] = useState("");
+  const { onCopy, value, setValue, hasCopied } = useClipboard("");
+  const toast = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,9 +51,16 @@ export function DetailCall() {
       fetchData();
     }
   }, [id_call]);
-  
 
-  if (loading) return <Loading/>
+  const handleCopy = (value) => {
+    setValue(value);
+    onCopy();
+    toast({
+      title: "URL Google Map dicopy",
+      status: "info",
+    });
+  };
+  if (loading) return <Loading />;
   if (error) return <div>Error fetching data</div>;
 
   return (
@@ -192,13 +204,19 @@ export function DetailCall() {
                             <Th>LOKASI</Th>
                             <Td>
                               <Center>
-                                <Text>{formatDecimal(call.latitude)}, </Text>
-                                <Text>
-                                  {formatDecimal(call.longitude)}
-                                </Text>{" "}
+                                <Text mx={2}>
+                                  {formatDecimal(call.latitude)},{" "}
+                                </Text>
+                                <Text>{formatDecimal(call.longitude)}</Text>
                                 <a href={call.url_google_map} target="_blank">
-                                  <ExternalLinkIcon />
-                                </a>
+                                  <ExternalLinkIcon mx={2} mb={1} />
+                                </a>{" "}
+                                <CopyIcon
+                                  mx={2}
+                                  onClick={() => {
+                                    handleCopy(call.url_google_map);
+                                  }}
+                                />
                               </Center>
                             </Td>{" "}
                           </Tr>

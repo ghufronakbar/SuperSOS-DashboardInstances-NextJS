@@ -19,7 +19,7 @@ export function withAuth(Component) {
           } else {
             if (!payload.rows[0].id_instances) {
               router.push("/admin/login");              
-            } else {
+              } else {                
               const tokenExpiration = payload.rows[0].exp * 1000;
               if (tokenExpiration < Date.now()) {
                 router.push("/admin/call");
