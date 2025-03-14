@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { axiosInstance } from "@/lib/axios";
-import { Main } from "next/document";
 import {
   Button,
   Container,
@@ -94,7 +93,7 @@ function Login() {
             </Button>
           </form>
           <HStack mt={4}>
-          <Text>Don't have an account?  </Text><Text color='blue' onClick={()=>{router.push(`/admin/register`)}}>Sign Up</Text>
+          <Text>Don&apos;t have an account?  </Text><Text color='blue' onClick={()=>{router.push(`/admin/register`)}}>Sign Up</Text>
           </HStack>
           {error && <div style={{ color: "red" }}>{error}</div>}
         </Container>

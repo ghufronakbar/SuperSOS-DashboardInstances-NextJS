@@ -15,6 +15,7 @@ export default function Custom404() {
       <Image
       src='/404.jpg'
       width={500}
+      alt=""
       height={500}/>      
       <Text marginTop="4">
         Return to{" "}

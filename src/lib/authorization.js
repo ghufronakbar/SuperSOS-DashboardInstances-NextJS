@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 export function withAuth(Component) {
+  // eslint-disable-next-line react/display-name
   return (props) => {
     const router = useRouter();
     const [userData, setUserData] = useState(null);
